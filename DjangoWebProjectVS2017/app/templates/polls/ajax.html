@@ -1,0 +1,27 @@
+﻿<script>
+
+    $(".APosti").click(
+        function () {
+            console.log("clicked");
+            let id = $(this).attr("value");
+            console.log(id);
+            let idd = $(".formidmyown").attr("action").split("/")[2];
+            let csr = $("input[name=csrfmiddlewaretoken").val();
+            console.log(idd);
+            mydata = { choice_id:idd,csrfmiddlewaretoken:csr  }
+    $.ajax({
+        url: '{% url 'prueba' %}',
+        data: {
+          'choice_id': id
+        },
+        success: function (data) {
+        $("#result").html(data["result"]);
+        
+        
+          
+           
+        }
+      }); 
+        }
+    );
+</script>

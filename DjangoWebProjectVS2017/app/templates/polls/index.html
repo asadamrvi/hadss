@@ -1,0 +1,51 @@
+﻿{% extends "app/layout.html" %}
+{% block content %}
+
+<h2>{{ title }}.</h2>
+<h3>{{ message }}</h3>
+
+{% if latest_question_list %}
+    <form method="POST" class="post-form" >{% csrf_token %}
+            <select name="subject">
+                    <option value="null">---</option>
+                {% for subject in subjects %} 
+                    <option value="{{ subject }}">{{ subject }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Filter</button>
+    </form>
+    <ul>
+     <table>
+  
+    {% for question in latest_question_list %}
+        {% if subject == "null" or subject == question.subject %}
+        
+              <tr>
+    <td><li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li></td>
+   
+  
+
+        
+        {% if request.user.is_authenticated %}
+         <td><form action="{% url 'delete' question.id  %}" method ="POST">{% csrf_token %}
+         <input type="submit" value="Delete"/>
+
+        </form></td>
+    
+  </tr>
+        {% endif %}
+        {% endif %}
+    {% endfor %}
+         </table>
+    </ul>
+   
+ 
+  
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+{% if request.user.is_authenticated %}
+<a href="{% url 'add' %}"><h2>Insertar pregunta</h2></a> 
+{% endif %}
+
+{% endblock %}
